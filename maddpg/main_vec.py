@@ -160,6 +160,7 @@ p.start()
 
 for i_episode in range(args.num_episodes):
     obs_n = env.reset()
+    env.render()
     episode_reward = 0
     episode_step = 0
     agents_rew = [[] for _ in range(n_agents)]
@@ -168,6 +169,7 @@ for i_episode in range(args.num_episodes):
         action_n = agent.select_action(torch.Tensor(obs_n).to(device), action_noise=True,
                                        param_noise=False).squeeze().cpu().numpy()
         next_obs_n, reward_n, done_n, info = env.step(action_n)
+        env.render()
         total_numsteps += 1
         episode_step += 1
         terminal = (episode_step >= args.num_steps)
@@ -197,7 +199,8 @@ for i_episode in range(args.num_episodes):
                 for _ in range(args.critic_updates_per_step):
                     transitions = memory.sample(args.batch_size)
                     batch = Transition(*zip(*transitions))
-                    value_losses.append(agent.update_critic_parameters(batch, i, args.shuffle))
+                    val_loss, _, _ = agent.update_critic_parameters(batch, i, args.shuffle)
+                    value_losses.append(val_loss)
                     updates += 1
                 value_loss = np.mean(value_losses)
                 print('episode {}, q loss {},  q_lr {}'.

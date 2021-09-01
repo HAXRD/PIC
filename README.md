@@ -37,7 +37,7 @@ Please ensure that `multiagent-particle-envs` has been added to your `PYTHONPATH
 
 ### Training 
     cd maddpg
-	python main_vec.py --exp_name coop_navigation_n6 --scenario simple_spread_n6  --critic_type gcn_max  --cuda 
+	python main_vec.py --exp_name simple_spread_n6 --scenario simple_spread_n6  --critic_type gcn_max  --cuda 
 
 ### Acknowledgement
 The MADDPG code is based on the DDPG implementation of https://github.com/ikostrikov/pytorch-ddpg-naf
